@@ -2,8 +2,11 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Template.Application.Interfaces;
+using Template.Application.Mappers;
 using Template.Application.Models;
+using Template.Application.UseCases.CreateTodo;
 using Template.Application.UseCases.GetTodo;
+using Template.Core.Entities;
 
 namespace Template.Application;
 
@@ -15,13 +18,21 @@ public static class DependencyInjection
         {
             return services
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
-                .AddUseCases();
+                .AddUseCases()
+                .AddMappers();
         }
 
         private IServiceCollection AddUseCases()
         {
             return services
-                .AddScoped<IUseCase<GetTodoRequest, TodoModel?>, GetTodoUseCase>();
+                .AddScoped<IUseCase<GetTodoRequest, TodoModel?>, GetTodoUseCase>()
+                .AddScoped<IUseCase<CreateTodoRequest, TodoModel?>, CreateTodoUseCase>();
+        }
+
+        private IServiceCollection AddMappers()
+        {
+            return services
+                .AddTransient<IMapper<Todo, TodoModel>, TodoMapper>();
         }
     }
 }

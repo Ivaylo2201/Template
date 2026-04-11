@@ -1,17 +1,14 @@
-using System.Reflection;
 using Serilog;
 using Template.Application;
 using Template.Infrastructure;
 using Template.Infrastructure.Enums;
+using Template.WebAPI;
 using Template.WebAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var serviceName = Assembly.GetEntryAssembly()?.GetName().Name ?? "Template.WebAPI";
-
 builder.Services
-    .AddEndpointsApiExplorer()
-    .AddSwaggerGen(options => options.ConfigureSwaggerGen())
+    .AddPresentation()
     .AddInfrastructure(builder)
     .AddApplication();
 
@@ -31,6 +28,6 @@ app.UseSerilogRequestLogging();
 
 app.MapEndpoints();
 
-Log.Information("[{ServiceName}]: Configuring web host in {ServiceEnvironment}...", serviceName, app.Environment.EnvironmentName);
+Log.Information("Configuring web host in {ServiceEnvironment}...", app.Environment.EnvironmentName);
 
 app.Run();

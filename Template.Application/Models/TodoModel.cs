@@ -1,3 +1,3 @@
 ﻿namespace Template.Application.Models;
 
-public record TodoModel;
+public record TodoModel(int Id);

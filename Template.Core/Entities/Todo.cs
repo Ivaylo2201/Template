@@ -4,9 +4,9 @@ namespace Template.Core.Entities;
 
 public class Todo
 {
-    public int Id { get; set; }
-    public required string Title { get; set; }
+    public int Id { get; init; }
+    public required string Title { get; init; }
     public bool IsCompleted { get; set; }
-    public required Priority Priority { get; set; }
-    public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+    public required Priority Priority { get; init; }
+    public DateTime CreatedAtUtc { get; init; } = DateTime.UtcNow;
 }

@@ -14,14 +14,11 @@ public class GetTodoUseCase(
 {
     public async Task<Result<TodoModel?>> ExecuteAsync(GetTodoRequest request, CancellationToken ct)
     {
-        var result = await validator.ValidateAsync(request, ct);
-
-        if (!result.IsValid)
-            return (ResultStatus.Invalid, null);
+        await validator.ValidateAndThrowAsync(request, ct);
         
         var todo = await dbContext.Todos
             .Where(x => x.Id == request.Id)
-            .Select(x => new TodoModel())
+            .Select(x => new TodoModel(x.Id))
             .FirstOrDefaultAsync(ct);
 
         return todo is null
