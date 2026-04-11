@@ -23,7 +23,7 @@ public class Result<TValue>
     }
     
     [MemberNotNullWhen(true, nameof(Value))]
-    public bool IsSuccess => Value is not null;
+    public bool IsSuccess => Value is not null && !EqualityComparer<TValue>.Default.Equals(Value, default);
 
     public static implicit operator Result<TValue>((ResultStatus Status, TValue Value) tuple) 
         => new(tuple.Status, tuple.Value);

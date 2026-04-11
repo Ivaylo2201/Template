@@ -8,5 +8,7 @@ public static class EndpointsExtensions
     {
         app.MapGetTodo();
         app.MapCreateTodo();
+        app.MapUpdateTodo();
+        app.MapDeleteTodo();
     }
 }

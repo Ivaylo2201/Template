@@ -2,15 +2,18 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Template.Application.Common;
+using Template.Application.Extensions;
 using Template.Application.Interfaces;
 using Template.Application.Models;
+using Template.Core.Entities;
 
 namespace Template.Application.UseCases.GetTodo;
 
 public class GetTodoUseCase(
     ILogger<GetTodoUseCase> logger,
     IAppDbContext dbContext,
-    IValidator<GetTodoRequest> validator) : IUseCase<GetTodoRequest, TodoModel?>
+    IValidator<GetTodoRequest> validator,
+    IMapper<Todo, TodoModel> mapper) : IUseCase<GetTodoRequest, TodoModel?>
 {
     public async Task<Result<TodoModel?>> ExecuteAsync(GetTodoRequest request, CancellationToken ct)
     {
@@ -18,11 +21,15 @@ public class GetTodoUseCase(
         
         var todo = await dbContext.Todos
             .Where(x => x.Id == request.Id)
-            .Select(x => new TodoModel(x.Id))
+            .Select(x => mapper.Map(x))
             .FirstOrDefaultAsync(ct);
 
-        return todo is null
-            ? (ResultStatus.NotFound, null)
-            : (ResultStatus.Ok, todo);
+        if (todo is null)
+        {
+            logger.TodoNotFound(request.Id);
+            return ResultStatus.NotFound;
+        }
+
+        return (ResultStatus.Ok, todo);
     }
 }

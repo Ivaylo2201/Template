@@ -2,5 +2,5 @@
 
 public readonly struct Unit
 {
-    public static readonly Unit Value = new();
+    public static Unit Value => new();
 }
