@@ -8,7 +8,9 @@ namespace Template.WebAPI.Endpoints;
 public static class CreateTodo
 {
     public static void MapCreateTodo(this WebApplication app) => app
-        .MapPost("todos", CreateTodoAsync);
+        .MapPost("todos", CreateTodoAsync)
+        .ProducesValidationProblem() // Include where validation is present, handled by the exception handler
+        .WithName(nameof(GetTodo));
 
     private static async Task<Results<CreatedAtRoute<TodoModel>, BadRequest>> CreateTodoAsync(CreateTodoRequest request, IUseCase<CreateTodoRequest, TodoModel> useCase, CancellationToken ct)
     {
