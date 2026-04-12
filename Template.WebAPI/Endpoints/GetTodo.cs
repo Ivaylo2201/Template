@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Template.Application.Interfaces;
 using Template.Application.Models;
 using Template.Application.UseCases.GetTodo;
@@ -8,18 +7,15 @@ using Template.WebAPI.Interfaces;
 
 namespace Template.WebAPI.Endpoints;
 
-/// <summary>
-/// Version 1:
-/// - Use this when the use case has 1 success path and 1 failure path
-/// - Use the correct response type paired with ProblemDetails
-/// </summary>
-public class GetTodoV1 : IEndpoint
+public class GetTodo : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app) => app
-        .MapGet("todos/v1/{id:int}", GetTodoAsync)
-        .WithName(nameof(GetTodoV1));
+        .MapGet("todos/{id:int}", GetTodoAsync)
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithName(nameof(GetTodo));
     
-    private static async Task<Results<Ok<TodoModel>, NotFound<ProblemDetails>>> GetTodoAsync(
+    private static async Task<Results<Ok<TodoModel>, ProblemHttpResult>> GetTodoAsync(
         int id,
         IUseCase<GetTodoRequest, TodoModel?> useCase,
         CancellationToken ct)
@@ -28,6 +24,6 @@ public class GetTodoV1 : IEndpoint
         
         return result.IsSuccess 
             ? TypedResults.Ok(result.Value)
-            : TypedResults.NotFound(result.ToProblemDetails());
+            : TypedResults.Problem(result.ToProblemDetails());
     }
 }

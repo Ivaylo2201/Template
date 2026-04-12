@@ -3,9 +3,9 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Template.WebAPI.Extensions;
 
-public static class SwaggerGenExtensions
+public static class SwaggerExtensions
 {
-    public static void ConfigureSwaggerGen(this SwaggerGenOptions options)
+    public static void ConfigureSwagger(this SwaggerGenOptions options)
     {
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {

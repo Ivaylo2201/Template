@@ -1,12 +1,9 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using Template.Application.Common;
 using Template.Application.Interfaces;
 using Template.Application.Mappers;
 using Template.Application.Models;
-using Template.Application.UseCases.CompleteTodo;
-using Template.Application.UseCases.CreateTodo;
 using Template.Application.UseCases.GetTodo;
 using Template.Core.Entities;
 
@@ -27,9 +24,7 @@ public static class DependencyInjection
         private IServiceCollection AddUseCases()
         {
             return services
-                .AddScoped<IUseCase<GetTodoRequest, TodoModel?>, GetTodoUseCase>()
-                .AddScoped<IUseCase<CreateTodoRequest, TodoModel?>, CreateTodoUseCase>()
-                .AddScoped<IUseCase<CompleteTodoRequest, Unit>, CompleteTodoUseCase>();
+                .AddScoped<IUseCase<GetTodoRequest, TodoModel?>, GetTodoUseCase>();
         }
 
         private IServiceCollection AddMappers()

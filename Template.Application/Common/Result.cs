@@ -2,9 +2,8 @@
 
 namespace Template.Application.Common;
 
-public enum ResultStatus
+public enum ErrorType
 {
-    Ok = 0,
     Created,
     Invalid,
     NotFound,
@@ -13,19 +12,18 @@ public enum ResultStatus
 
 public class Result<TValue>
 {
-    public readonly ResultStatus Status;
+    public readonly ErrorType? Error;
     public readonly TValue? Value;
 
-    private Result(ResultStatus status, TValue? value, bool isSuccess)
+    private Result(TValue? value, ErrorType? error)
     {
-        Status = status;
         Value = value;
-        IsSuccess = isSuccess;
+        Error = error;
     }
 
     [MemberNotNullWhen(true, nameof(Value))]
-    public bool IsSuccess => field && Value is not null;
+    public bool IsSuccess => Error is null && Value is not null;
 
-    public static Result<TValue> Failure(ResultStatus status) => new(status, default, false);
-    public static Result<TValue> Success(ResultStatus status, TValue value) => new(status, value, true);
+    public static Result<TValue> Failure(ErrorType error) => new(default, error);
+    public static Result<TValue> Success(TValue value) => new(value, null);
 }
