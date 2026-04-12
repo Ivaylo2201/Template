@@ -1,4 +1,5 @@
-﻿using Template.WebAPI.Endpoints;
+﻿using System.Reflection;
+using Template.WebAPI.Interfaces;
 
 namespace Template.WebAPI.Extensions;
 
@@ -6,9 +7,14 @@ public static class EndpointsExtensions
 {
     public static void MapEndpoints(this WebApplication app)
     {
-        app.MapGetTodo();
-        app.MapCreateTodo();
-        app.MapUpdateTodo();
-        app.MapDeleteTodo();
+        var endpoints = typeof(IEndpoint).Assembly
+            .GetTypes()
+            .Where(x => typeof(IEndpoint).IsAssignableFrom(x) && x is { IsAbstract: false, IsInterface: false });
+
+        foreach (var type in endpoints)
+        {
+            var method = type.GetMethod(nameof(IEndpoint.Map), BindingFlags.Public | BindingFlags.Static);
+            method?.Invoke(null, [app]);
+        }
     }
 }

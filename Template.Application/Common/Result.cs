@@ -16,18 +16,16 @@ public class Result<TValue>
     public readonly ResultStatus Status;
     public readonly TValue? Value;
 
-    private Result(ResultStatus status, TValue? value)
+    private Result(ResultStatus status, TValue? value, bool isSuccess)
     {
         Status = status;
         Value = value;
+        IsSuccess = isSuccess;
     }
-    
-    [MemberNotNullWhen(true, nameof(Value))]
-    public bool IsSuccess => Value is not null && !EqualityComparer<TValue>.Default.Equals(Value, default);
 
-    public static implicit operator Result<TValue>((ResultStatus Status, TValue Value) tuple) 
-        => new(tuple.Status, tuple.Value);
-    
-    public static implicit operator Result<TValue>(ResultStatus status) 
-        => new(status, default);
+    [MemberNotNullWhen(true, nameof(Value))]
+    public bool IsSuccess => field && Value is not null;
+
+    public static Result<TValue> Failure(ResultStatus status) => new(status, default, false);
+    public static Result<TValue> Success(ResultStatus status, TValue value) => new(status, value, true);
 }

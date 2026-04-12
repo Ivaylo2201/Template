@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Template.Application.Common;
 using Template.Application.Extensions;
@@ -12,13 +11,10 @@ namespace Template.Application.UseCases.GetTodo;
 public class GetTodoUseCase(
     ILogger<GetTodoUseCase> logger,
     IAppDbContext dbContext,
-    IValidator<GetTodoRequest> validator,
     IMapper<Todo, TodoModel> mapper) : IUseCase<GetTodoRequest, TodoModel?>
 {
     public async Task<Result<TodoModel?>> ExecuteAsync(GetTodoRequest request, CancellationToken ct)
     {
-        await validator.ValidateAndThrowAsync(request, ct);
-        
         var todo = await dbContext.Todos
             .Where(x => x.Id == request.Id)
             .Select(x => mapper.Map(x))
@@ -27,9 +23,9 @@ public class GetTodoUseCase(
         if (todo is null)
         {
             logger.TodoNotFound(request.Id);
-            return ResultStatus.NotFound;
+            return Result<TodoModel?>.Failure(ResultStatus.NotFound);
         }
-
-        return (ResultStatus.Ok, todo);
+        
+        return Result<TodoModel?>.Success(ResultStatus.Ok, todo);
     }
 }

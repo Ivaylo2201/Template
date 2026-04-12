@@ -25,7 +25,7 @@ public class CreateTodoUseCase(
         
         await dbContext.Todos.AddAsync(todo, ct);
         await dbContext.SaveChangesAsync(ct);
-
-        return (ResultStatus.Created, mapper.Map(todo));
+        
+        return Result<TodoModel?>.Success(ResultStatus.Created, mapper.Map(todo));
     }
 }

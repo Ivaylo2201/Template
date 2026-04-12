@@ -5,10 +5,9 @@ using Template.Application.Common;
 using Template.Application.Interfaces;
 using Template.Application.Mappers;
 using Template.Application.Models;
+using Template.Application.UseCases.CompleteTodo;
 using Template.Application.UseCases.CreateTodo;
-using Template.Application.UseCases.DeleteTodo;
 using Template.Application.UseCases.GetTodo;
-using Template.Application.UseCases.UpdateTodo;
 using Template.Core.Entities;
 
 namespace Template.Application;
@@ -30,8 +29,7 @@ public static class DependencyInjection
             return services
                 .AddScoped<IUseCase<GetTodoRequest, TodoModel?>, GetTodoUseCase>()
                 .AddScoped<IUseCase<CreateTodoRequest, TodoModel?>, CreateTodoUseCase>()
-                .AddScoped<IUseCase<UpdateTodoRequest, Unit>, UpdateTodoUseCase>()
-                .AddScoped<IUseCase<DeleteTodoRequest, Unit>, DeleteTodoUseCase>();
+                .AddScoped<IUseCase<CompleteTodoRequest, Unit>, CompleteTodoUseCase>();
         }
 
         private IServiceCollection AddMappers()
