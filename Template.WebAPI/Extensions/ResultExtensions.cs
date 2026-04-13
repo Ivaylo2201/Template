@@ -7,6 +7,9 @@ public static class ResultExtensions
 {
     public static ProblemDetails ToProblemDetails<TValue>(this Result<TValue> result)
     {
+        if (result.IsSuccess)
+            throw new InvalidOperationException("Cannot convert a successful result to ProblemDetails.");
+        
         var (status, title) = result.Error switch
         {
             ErrorType.NotFound  => (StatusCodes.Status404NotFound, "Resource not found."),

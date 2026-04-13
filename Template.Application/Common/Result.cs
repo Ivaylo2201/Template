@@ -4,7 +4,6 @@ namespace Template.Application.Common;
 
 public enum ErrorType
 {
-    Created,
     Invalid,
     NotFound,
     Forbidden
@@ -24,6 +23,6 @@ public class Result<TValue>
     [MemberNotNullWhen(true, nameof(Value))]
     public bool IsSuccess => Error is null && Value is not null;
 
-    public static Result<TValue> Failure(ErrorType error) => new(default, error);
     public static Result<TValue> Success(TValue value) => new(value, null);
+    public static Result<TValue> Failure(ErrorType error) => new(default, error);
 }

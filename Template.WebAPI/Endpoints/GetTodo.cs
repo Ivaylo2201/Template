@@ -12,7 +12,6 @@ public class GetTodo : IEndpoint
     public static void Map(IEndpointRouteBuilder app) => app
         .MapGet("todos/{id:int}", GetTodoAsync)
         .ProducesProblem(StatusCodes.Status404NotFound)
-        .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithName(nameof(GetTodo));
     
     private static async Task<Results<Ok<TodoModel>, ProblemHttpResult>> GetTodoAsync(

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Template.WebAPI.Filters;
 using Template.WebAPI.Interfaces;
 
 namespace Template.WebAPI.Extensions;
@@ -16,5 +17,12 @@ public static class EndpointsExtensions
             var method = type.GetMethod(nameof(IEndpoint.Map), BindingFlags.Public | BindingFlags.Static);
             method?.Invoke(null, [app]);
         }
+    }
+    
+    public static RouteHandlerBuilder WithValidation<TRequest>(this RouteHandlerBuilder builder)
+    {
+        return builder
+            .AddEndpointFilter<ValidationFilter<TRequest>>()
+            .ProducesValidationProblem();
     }
 }
