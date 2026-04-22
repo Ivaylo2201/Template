@@ -21,23 +21,23 @@ public class CompleteTodoUseCaseTests
         _dbContext
             .Setup(x => x.Todos)
             .ReturnsDbSet([new Todo { Id = 1 }]);
-        
-        var result = await new CompleteTodoUseCase(_logger.Object, _dbContext.Object)
-            .ExecuteAsync(_request, CancellationToken.None);
+
+        var useCase = new CompleteTodoUseCase(_logger.Object, _dbContext.Object);
+        var result = await useCase.ExecuteAsync(_request, CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
         result.ErrorCode.Should().BeNull();
     }
     
     [Fact]
-    public async Task CompleteTodo_ReturnsAlreadyCompleted_WhenTodoIsAlreadyCompleted()
+    public async Task CompleteTodo_ShouldReturnAlreadyCompleted_WhenTodoIsAlreadyCompleted()
     {
         _dbContext
             .Setup(x => x.Todos)
             .ReturnsDbSet([new Todo { Id = 1, IsCompleted = true }]);
 
-        var result = await new CompleteTodoUseCase(_logger.Object, _dbContext.Object)
-            .ExecuteAsync(_request, CancellationToken.None);
+        var useCase = new CompleteTodoUseCase(_logger.Object, _dbContext.Object);
+        var result = await useCase.ExecuteAsync(_request, CancellationToken.None);
 
         result.IsSuccess.Should().BeFalse();
         result.ErrorCode.Should().Be(CompleteTodoError.AlreadyCompleted);
@@ -50,8 +50,8 @@ public class CompleteTodoUseCaseTests
             .Setup(x => x.Todos)
             .ReturnsDbSet([]);
         
-        var result = await new CompleteTodoUseCase(_logger.Object, _dbContext.Object)
-            .ExecuteAsync(_request, CancellationToken.None);
+        var useCase = new CompleteTodoUseCase(_logger.Object, _dbContext.Object);
+        var result = await useCase.ExecuteAsync(_request, CancellationToken.None);
 
         result.IsSuccess.Should().BeFalse();
         result.ErrorCode.Should().Be(Error.NotFound);
