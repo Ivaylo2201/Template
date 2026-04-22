@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
 using FluentValidation;
+using Mapster;
+using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
 using Template.Application.Common;
 using Template.Application.Interfaces;
-using Template.Application.Mappers;
 using Template.Application.Models;
 using Template.Application.UseCases.CompleteTodo;
 using Template.Application.UseCases.CreateTodo;
 using Template.Application.UseCases.GetTodo;
-using Template.Core.Entities;
 
 namespace Template.Application;
 
@@ -20,8 +20,8 @@ public static class DependencyInjection
         {
             return services
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
-                .AddUseCases()
-                .AddMappers();
+                .AddMappers()
+                .AddUseCases();
         }
 
         private IServiceCollection AddUseCases()
@@ -35,7 +35,8 @@ public static class DependencyInjection
         private IServiceCollection AddMappers()
         {
             return services
-                .AddTransient<IMapper<Todo, TodoModel>, TodoMapper>();
+                .AddSingleton(TypeAdapterConfig.GlobalSettings)
+                .AddScoped<IMapper, ServiceMapper>();
         }
     }
 }

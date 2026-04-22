@@ -1,15 +1,16 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MapsterMapper;
+using Microsoft.Extensions.Logging;
 using Template.Application.Common;
 using Template.Application.Interfaces;
 using Template.Application.Models;
-using Template.Core.Entities;
+using Template.Domain.Entities;
 
 namespace Template.Application.UseCases.CreateTodo;
 
 public class CreateTodoUseCase(
     ILogger<CreateTodoUseCase> logger,
     IAppDbContext dbContext,
-    IMapper<Todo, TodoModel> mapper) : IUseCase<CreateTodoRequest, TodoModel>
+    IMapper mapper) : IUseCase<CreateTodoRequest, TodoModel>
 {
     public async Task<Result<TodoModel>> ExecuteAsync(CreateTodoRequest request, CancellationToken ct)
     {
@@ -22,6 +23,6 @@ public class CreateTodoUseCase(
         await dbContext.Todos.AddAsync(todo, ct);
         await dbContext.SaveChangesAsync(ct);
         
-        return Result<TodoModel>.Success(mapper.Map(todo));
+        return Result<TodoModel>.Success(mapper.Map<TodoModel>(todo));
     }
 }

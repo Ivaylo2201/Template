@@ -1,4 +1,4 @@
-﻿using Template.Core.Enums;
+﻿using Template.Domain.Enums;
 
 namespace Template.Application.Models;
 

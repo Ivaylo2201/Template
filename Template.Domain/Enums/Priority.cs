@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Template.Core.Enums;
+namespace Template.Domain.Enums;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Priority

@@ -1,17 +1,13 @@
-﻿using Template.Application.Interfaces;
+﻿using Mapster;
 using Template.Application.Models;
-using Template.Core.Entities;
+using Template.Domain.Entities;
 
 namespace Template.Application.Mappers;
 
-public class TodoMapper : IMapper<Todo, TodoModel>
+public class TodoMapper : IRegister
 {
-    public TodoModel Map(Todo source) => new()
+    public void Register(TypeAdapterConfig config)
     {
-        Id = source.Id,
-        Title = source.Title,
-        IsCompleted = source.IsCompleted,
-        Priority = source.Priority,
-        CreatedAtUtc = source.CreatedAtUtc
-    };
+        config.NewConfig<Todo, TodoModel>();
+    }
 }

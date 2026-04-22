@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Template.Core.Entities;
+using Template.Domain.Entities;
 
 namespace Template.Application.Interfaces;
 

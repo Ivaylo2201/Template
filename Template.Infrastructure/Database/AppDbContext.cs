@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Template.Application.Interfaces;
-using Template.Core.Entities;
+using Template.Domain.Entities;
 
 namespace Template.Infrastructure.Database;
 
