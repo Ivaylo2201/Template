@@ -11,7 +11,6 @@ public class CreateTodo : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app) => app
         .MapPost("todos", CreateTodoAsync)
-        .WithValidation<CreateTodoRequest>()
         .WithName(nameof(CreateTodo));
 
     private static async Task<Results<CreatedAtRoute<TodoModel>, ProblemHttpResult>> CreateTodoAsync(

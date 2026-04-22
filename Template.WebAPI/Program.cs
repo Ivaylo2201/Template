@@ -25,7 +25,6 @@ app.UseAuthorization();
 app.UseCors(nameof(Policy.AllowAny));
 app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
-
 app.MapEndpoints();
 
 Log.Information("Configuring web host in {ServiceEnvironment}...", app.Environment.EnvironmentName);

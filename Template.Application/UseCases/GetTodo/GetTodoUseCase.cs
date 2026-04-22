@@ -23,7 +23,7 @@ public class GetTodoUseCase(
         if (todo is null)
         {
             logger.TodoNotFound(request.Id);
-            return Result<TodoModel?>.Failure(ErrorType.NotFound);
+            return Result<TodoModel?>.Failure(Error.NotFound);
         }
 
         return Result<TodoModel?>.Success(todo);

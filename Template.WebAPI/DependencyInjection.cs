@@ -4,11 +4,14 @@ namespace Template.WebAPI;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPresentation(this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        return services
-            .AddEndpointsApiExplorer()
-            .AddSwaggerGen(options => options.ConfigureSwagger())
-            .AddProblemDetails();
+        public IServiceCollection AddPresentation()
+        {
+            return services
+                .AddEndpointsApiExplorer()
+                .AddSwaggerGen(options => options.ConfigureSwagger())
+                .AddProblemDetails();
+        }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Template.Application.Interfaces;
@@ -54,14 +55,13 @@ public static class DependencyInjection
         private IServiceCollection AddPersistence(IConfiguration configuration)
         {
             return services
-                .AddDbContext<AppDbContext>(optionsBuilder =>
+                .AddDbContext<AppDbContext>(options =>
                 {
-                    optionsBuilder.UseNpgsql(
-                        configuration.GetConnectionString("DefaultConnection"),
-                        npgSqlOptionsBuilder =>
-                        {
-                            npgSqlOptionsBuilder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                        });
+                    var connectionString = configuration.GetConnectionString("DefaultConnection");
+                    
+                    options
+                        .UseNpgsql(connectionString, x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
+                        .LogTo(Log.Logger.Information, LogLevel.Information);
                 })
                 .AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
         }

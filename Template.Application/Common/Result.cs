@@ -2,27 +2,21 @@
 
 namespace Template.Application.Common;
 
-public enum ErrorType
-{
-    Invalid,
-    NotFound,
-    Forbidden
-}
-
 public class Result<TValue>
 {
-    public readonly ErrorType? Error;
+    public readonly Enum? ErrorCode;
     public readonly TValue? Value;
 
-    private Result(TValue? value, ErrorType? error)
+    private Result(TValue? value, Enum? errorCode)
     {
         Value = value;
-        Error = error;
+        ErrorCode = errorCode;
     }
 
     [MemberNotNullWhen(true, nameof(Value))]
-    public bool IsSuccess => Error is null && Value is not null;
+    [MemberNotNullWhen(false, nameof(ErrorCode))]
+    public bool IsSuccess => ErrorCode is null;
 
     public static Result<TValue> Success(TValue value) => new(value, null);
-    public static Result<TValue> Failure(ErrorType error) => new(default, error);
+    public static Result<TValue> Failure(Enum error) => new(default, error);
 }
