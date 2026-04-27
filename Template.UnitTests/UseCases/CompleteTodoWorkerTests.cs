@@ -9,9 +9,9 @@ using Template.Domain.Entities;
 
 namespace Template.UnitTests.UseCases;
 
-public class CompleteTodoUseCaseTests
+public class CompleteTodoWorkerTests
 {
-    private readonly Mock<ILogger<CompleteTodoUseCase>> _logger = new();
+    private readonly Mock<ILogger<CompleteTodoWorker>> _logger = new();
     private readonly Mock<IAppDbContext> _dbContext = new();
     private readonly CompleteTodoRequest _request = new(1);
 
@@ -22,7 +22,7 @@ public class CompleteTodoUseCaseTests
             .Setup(x => x.Todos)
             .ReturnsDbSet([new Todo { Id = 1 }]);
 
-        var useCase = new CompleteTodoUseCase(_logger.Object, _dbContext.Object);
+        var useCase = new CompleteTodoWorker(_logger.Object, _dbContext.Object);
         var result = await useCase.ExecuteAsync(_request, CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
@@ -36,7 +36,7 @@ public class CompleteTodoUseCaseTests
             .Setup(x => x.Todos)
             .ReturnsDbSet([new Todo { Id = 1, IsCompleted = true }]);
 
-        var useCase = new CompleteTodoUseCase(_logger.Object, _dbContext.Object);
+        var useCase = new CompleteTodoWorker(_logger.Object, _dbContext.Object);
         var result = await useCase.ExecuteAsync(_request, CancellationToken.None);
 
         result.IsSuccess.Should().BeFalse();
@@ -50,7 +50,7 @@ public class CompleteTodoUseCaseTests
             .Setup(x => x.Todos)
             .ReturnsDbSet([]);
         
-        var useCase = new CompleteTodoUseCase(_logger.Object, _dbContext.Object);
+        var useCase = new CompleteTodoWorker(_logger.Object, _dbContext.Object);
         var result = await useCase.ExecuteAsync(_request, CancellationToken.None);
 
         result.IsSuccess.Should().BeFalse();

@@ -6,9 +6,9 @@ using Template.Application.Interfaces;
 
 namespace Template.Application.UseCases.CompleteTodo;
 
-public class CompleteTodoUseCase(
-    ILogger<CompleteTodoUseCase> logger,
-    IAppDbContext dbContext) : IUseCase<CompleteTodoRequest, Unit>
+public class CompleteTodoWorker(
+    ILogger<CompleteTodoWorker> logger,
+    IAppDbContext dbContext) : IWorker<CompleteTodoRequest, Unit>
 {
     public async Task<Result<Unit>> ExecuteAsync(CompleteTodoRequest request, CancellationToken ct)
     {

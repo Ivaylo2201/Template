@@ -15,10 +15,10 @@ public class CreateTodo : IEndpoint
 
     private static async Task<Results<CreatedAtRoute<TodoModel>, ProblemHttpResult>> CreateTodoAsync(
         CreateTodoRequest request,
-        IUseCase<CreateTodoRequest, TodoModel> useCase,
+        IWorker<CreateTodoRequest, TodoModel> worker,
         CancellationToken ct)
     {
-        var result = await useCase.ExecuteAsync(request, ct);
+        var result = await worker.ExecuteAsync(request, ct);
         
         return result.IsSuccess
             ? TypedResults.CreatedAtRoute(result.Value, nameof(GetTodo), new { result.Value.Id })

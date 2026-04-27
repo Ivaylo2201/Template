@@ -8,9 +8,9 @@ using Template.Application.Models;
 
 namespace Template.Application.UseCases.GetTodo;
 
-public class GetTodoUseCase(
-    ILogger<GetTodoUseCase> logger,
-    IAppDbContext dbContext) : IUseCase<GetTodoRequest, TodoModel?>
+public class GetTodoWorker(
+    ILogger<GetTodoWorker> logger,
+    IAppDbContext dbContext) : IWorker<GetTodoRequest, TodoModel?>
 {
     public async Task<Result<TodoModel?>> ExecuteAsync(GetTodoRequest request, CancellationToken ct)
     {

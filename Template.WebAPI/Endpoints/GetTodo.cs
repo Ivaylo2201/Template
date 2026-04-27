@@ -16,10 +16,10 @@ public class GetTodo : IEndpoint
     
     private static async Task<Results<Ok<TodoModel>, ProblemHttpResult>> GetTodoAsync(
         int id,
-        IUseCase<GetTodoRequest, TodoModel?> useCase,
+        IWorker<GetTodoRequest, TodoModel?> worker,
         CancellationToken ct)
     {
-        var result = await useCase.ExecuteAsync(new GetTodoRequest(id), ct);
+        var result = await worker.ExecuteAsync(new GetTodoRequest(id), ct);
         
         return result.IsSuccess 
             ? TypedResults.Ok(result.Value)

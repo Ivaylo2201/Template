@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Template.Application.Common;
 using Template.Application.Interfaces;
 using Template.Application.UseCases.CompleteTodo;
+using Template.Application.UseCases.ComplexUseCase;
 using Template.WebAPI.Extensions;
 using Template.WebAPI.Interfaces;
 
@@ -16,10 +17,10 @@ public class CompleteTodo : IEndpoint
 
     private static async Task<Results<NoContent, NotFound<ProblemDetails>, Conflict<ProblemDetails>>> CompleteTodoAsync(
         [FromRoute] int todoId,
-        [FromServices] IUseCase<CompleteTodoRequest, Unit> useCase,
+        [FromServices] IWorker<ComplexUseCaseRequest, ComplexUseCaseResponse> worker,
         CancellationToken ct)
     {
-        var result = await useCase.ExecuteAsync(new CompleteTodoRequest(todoId), ct);
+        var result = await worker.ExecuteAsync(new ComplexUseCaseRequest(), ct);
 
         if (result.IsSuccess)
             return TypedResults.NoContent();
