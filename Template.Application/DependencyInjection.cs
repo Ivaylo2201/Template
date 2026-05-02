@@ -27,9 +27,9 @@ public static class DependencyInjection
         private IServiceCollection AddUseCases()
         {
             return services
-                .AddScoped<IUseCase<CreateTodoRequest, TodoModel>, CreateTodoUseCase>()
-                .AddScoped<IUseCase<GetTodoRequest, TodoModel?>, GetTodoUseCase>()
-                .AddScoped<IUseCase<CompleteTodoRequest, Unit>, CompleteTodoUseCase>();
+                .AddScoped<IWorker<CreateTodoRequest, TodoModel>, CreateTodoWorker>()
+                .AddScoped<IWorker<GetTodoRequest, TodoModel?>, GetTodoWorker>()
+                .AddScoped<IWorker<CompleteTodoRequest, Unit>, CompleteTodoWorker>();
         }
 
         private IServiceCollection AddMappers()

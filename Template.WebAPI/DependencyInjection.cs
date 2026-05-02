@@ -1,6 +1,4 @@
-﻿using Template.WebAPI.Extensions;
-
-namespace Template.WebAPI;
+﻿namespace Template.WebAPI;
 
 public static class DependencyInjection
 {
@@ -10,7 +8,7 @@ public static class DependencyInjection
         {
             return services
                 .AddEndpointsApiExplorer()
-                .AddSwaggerGen(options => options.ConfigureSwagger())
+                .AddOpenApi()
                 .AddProblemDetails();
         }
     }

@@ -7,12 +7,12 @@ using Template.Domain.Entities;
 
 namespace Template.Application.UseCases.CreateTodo;
 
-public class CreateTodoUseCase(
-    ILogger<CreateTodoUseCase> logger,
+public class CreateTodoWorker(
+    ILogger<CreateTodoWorker> logger,
     IAppDbContext dbContext,
-    IMapper mapper) : IUseCase<CreateTodoRequest, TodoModel>
+    IMapper mapper) : IWorker<CreateTodoRequest, TodoModel>
 {
-    public async Task<Result<TodoModel>> ExecuteAsync(CreateTodoRequest request, CancellationToken ct)
+    public async Task<Result<TodoModel>> ProcessAsync(CreateTodoRequest request, CancellationToken ct)
     {
         var todo = new Todo
         {

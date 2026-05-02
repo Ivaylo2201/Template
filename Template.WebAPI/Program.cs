@@ -1,3 +1,4 @@
+using Scalar.AspNetCore;
 using Serilog;
 using Template.Application;
 using Template.Infrastructure;
@@ -14,18 +15,14 @@ builder.Services
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+app.MapOpenApi();
+app.MapScalarApiReference();
 app.UseAuthentication();  
 app.UseAuthorization();
 app.UseCors(nameof(Policy.AllowAny));
 app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
-app.MapEndpoints();
+app.MapGroup("/api").MapEndpoints();
 
 Log.Information("Configuring web host in {ServiceEnvironment}...", app.Environment.EnvironmentName);
 

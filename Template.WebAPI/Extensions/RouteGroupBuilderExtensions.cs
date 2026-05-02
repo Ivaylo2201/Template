@@ -3,9 +3,9 @@ using Template.WebAPI.Interfaces;
 
 namespace Template.WebAPI.Extensions;
 
-public static class WebApplicationExtensions
+public static class RouteGroupBuilderExtensions
 {
-    extension(WebApplication app)
+    extension(RouteGroupBuilder group)
     {
         public void MapEndpoints()
         {
@@ -16,7 +16,7 @@ public static class WebApplicationExtensions
             foreach (var type in endpoints)
             {
                 var method = type.GetMethod(nameof(IEndpoint.Map), BindingFlags.Public | BindingFlags.Static);
-                method?.Invoke(null, [app]);
+                method?.Invoke(null, [group]);
             }
         }
     }

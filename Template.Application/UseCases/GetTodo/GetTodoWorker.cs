@@ -8,11 +8,11 @@ using Template.Application.Models;
 
 namespace Template.Application.UseCases.GetTodo;
 
-public class GetTodoUseCase(
-    ILogger<GetTodoUseCase> logger,
-    IAppDbContext dbContext) : IUseCase<GetTodoRequest, TodoModel?>
+public class GetTodoWorker(
+    ILogger<GetTodoWorker> logger,
+    IAppDbContext dbContext) : IWorker<GetTodoRequest, TodoModel?>
 {
-    public async Task<Result<TodoModel?>> ExecuteAsync(GetTodoRequest request, CancellationToken ct)
+    public async Task<Result<TodoModel?>> ProcessAsync(GetTodoRequest request, CancellationToken ct)
     {
         var todo = await dbContext.Todos
             .Where(x => x.Id == request.Id)

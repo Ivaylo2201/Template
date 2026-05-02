@@ -10,16 +10,17 @@ namespace Template.WebAPI.Endpoints;
 
 public class CompleteTodo : IEndpoint
 {
-    public static void Map(IEndpointRouteBuilder app) => app
-        .MapPatch("todos/{todoId:int}/complete", CompleteTodoAsync)
-        .WithName(nameof(CompleteTodo));
+    public static void Map(IEndpointRouteBuilder builder) => builder
+        .MapPatch("/v1/todos/{todoId:int}/complete", CompleteTodoAsync)
+        .WithDescription("Marks a Todo record as completed if not already completed.");
 
     private static async Task<Results<NoContent, NotFound<ProblemDetails>, Conflict<ProblemDetails>>> CompleteTodoAsync(
         [FromRoute] int todoId,
-        [FromServices] IUseCase<CompleteTodoRequest, Unit> useCase,
+        [FromServices] IWorker<CompleteTodoRequest, Unit> worker,
+        [FromHeader(Name = "Request-Id")] string requestId,
         CancellationToken ct)
     {
-        var result = await useCase.ExecuteAsync(new CompleteTodoRequest(todoId), ct);
+        var result = await worker.ProcessAsync(new CompleteTodoRequest(todoId), ct);
 
         if (result.IsSuccess)
             return TypedResults.NoContent();
@@ -29,5 +30,5 @@ public class CompleteTodo : IEndpoint
             CompleteTodoError.AlreadyCompleted => TypedResults.Conflict(result.ToProblemDetails()),
             _ => TypedResults.NotFound(result.ToProblemDetails())
         };
-    } 
+    }
 }
